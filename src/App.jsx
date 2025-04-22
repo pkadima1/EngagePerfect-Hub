@@ -15,6 +15,7 @@ import Signup from './pages/Signup';
 import ResetPassword from './pages/ResetPassword';
 import Dashboard from './pages/Dashboard';
 import { useUser } from './contexts/UserContext';
+import './index.css'; // Make sure CSS is imported
 
 // Protected route wrapper component
 const ProtectedRoute = ({ children }) => {

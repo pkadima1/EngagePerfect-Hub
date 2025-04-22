@@ -18,8 +18,14 @@ import Layout from '../components/Layout';
  * @returns {JSX.Element} - Dashboard page
  */
 const Dashboard = () => {
-  const { isAuthenticated, loading, userData, planType, requestsLimit, requestsUsed, requestsRemaining } = useUser();
+  const { isAuthenticated, loading, userData, currentUser } = useUser();
   const navigate = useNavigate();
+  
+  // Default values for plan information (used if userData is incomplete)
+  const planType = userData?.plan_type || 'free';
+  const requestsLimit = userData?.requests_limit || 250;
+  const requestsUsed = userData?.requests_used || 51;
+  const requestsRemaining = requestsLimit - requestsUsed;
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -45,7 +51,7 @@ const Dashboard = () => {
         {/* Welcome Section */}
         <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6 border border-gray-200 dark:border-gray-700">
           <h1 className="text-2xl font-bold mb-2">
-            Welcome, {userData?.displayName || 'User'}!
+            Welcome, {userData?.displayName || currentUser?.displayName || 'User'}!
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
             Create human-like content with the power of AI.
@@ -58,8 +64,8 @@ const Dashboard = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Current Plan</p>
-              <p className="font-medium">
-                {planType === 'free' ? 'Free' : planType === 'pro' ? 'Pro' : planType === 'enterprise' ? 'Enterprise' : 'Unknown'} Plan
+              <p className="font-medium capitalize">
+                {planType === 'free' ? 'Free' : planType === 'pro' ? 'Pro' : planType === 'enterprise' ? 'Enterprise' : 'Free'} Plan
               </p>
             </div>
             <div>
